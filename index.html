@@ -357,59 +357,147 @@
   /* Projects */
   #projets { background: var(--navy2); }
 
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .projects-list {
+    display: flex;
+    flex-direction: column;
     gap: 2px;
   }
 
   .project-card {
     background: var(--card);
     border: 1px solid var(--border);
-    padding: 32px;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.25s, transform 0.25s;
-    display: flex; flex-direction: column;
+    transition: border-color 0.25s;
   }
-  .project-card:hover { border-color: var(--cyan-dim); transform: translateY(-4px); }
-
-  .project-card::after {
+  .project-card:hover { border-color: var(--cyan-dim); }
+  .project-card::before {
     content: '';
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--cyan), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
   }
-  .project-card:hover::after { transform: scaleX(1); }
+
+  .project-header {
+    padding: 32px 40px 24px 48px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    cursor: pointer;
+    user-select: none;
+  }
+  .project-header:hover .project-title { color: var(--cyan); }
 
   .project-num {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     color: var(--cyan);
     opacity: 0.5;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     letter-spacing: 0.1em;
   }
   .project-title {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 22px;
     letter-spacing: -0.01em;
-    margin-bottom: 12px;
-    line-height: 1.3;
+    margin-bottom: 10px;
+    transition: color 0.2s;
   }
-  .project-desc {
+  .project-tagline {
     font-size: 13px;
     color: var(--gray);
-    line-height: 1.75;
-    flex: 1;
-    margin-bottom: 20px;
+    max-width: 600px;
+    line-height: 1.6;
   }
+  .project-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    color: var(--cyan);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 24px;
+    margin-top: 4px;
+  }
+  .project-toggle.open { transform: rotate(45deg); }
+
+  .project-body {
+    display: none;
+    padding: 0 40px 36px 48px;
+    border-top: 1px solid var(--border);
+  }
+  .project-body.open { display: block; }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 28px;
+  }
+
+  .project-block-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .project-block-title::before {
+    content: '';
+    display: block;
+    width: 16px; height: 1px;
+    background: var(--cyan);
+  }
+
+  .project-text {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+
+  .project-text ul {
+    padding-left: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .project-text ul li::marker { color: var(--cyan); }
+
+  .project-metrics {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .metric-pill {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .metric-pill strong {
+    font-size: 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+  }
+
+  .arch-diagram {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(6,182,212,0.04);
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    line-height: 2;
+  }
+  .arch-step {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .arch-arrow { color: var(--cyan); }
+
   .project-stack {
     display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 20px;
   }
 
   /* Contact */
@@ -605,47 +693,82 @@
   <div class="section-inner">
     <div class="section-label">Parcours</div>
     <h2>Expériences professionnelles</h2>
-    <div class="xp-list reveal">
+    <p style="font-size:13px;color:var(--gray);margin-bottom:40px;font-family:'DM Mono',monospace">
+      Cliquez sur une expérience pour voir le détail.
+    </p>
+    <div class="projects-list reveal">
 
-      <div class="xp-item">
-        <div>
-          <div class="xp-date">09/2024 — 10/2025</div>
-          <div class="xp-company">OEM Services</div>
+      <!-- XP 1 -->
+      <div class="project-card">
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">09/2024 — 10/2025 · OEM Services (Aéronautique)</div>
+            <div class="project-title">AI Engineer</div>
+            <div class="project-tagline">Conception et déploiement de solutions IA génératives en production — RAG multi-LLM, GraphRAG, architecture MCP.</div>
+          </div>
+          <div class="project-toggle">+</div>
         </div>
-        <div>
-          <div class="xp-role">AI Engineer — Aéronautique</div>
-          <div class="xp-highlight">Réduction de 60% des tickets SAP</div>
-          <div class="xp-desc">
-            Conception et pilotage end-to-end d'un pipeline RAG multi-LLM pour le support SAP. 
-            Backend FastAPI + GPT-4o Mini, architecture MCP, recherche sémantique Qdrant. 
-            Déploiement Docker/GitLab CI/CD avec monitoring (F1-score, Recall@k, MRR).
+        <div class="project-body">
+
+          <div style="margin-top:24px">
+            <div class="project-block-title">Assistant IA RAG — Support SAP</div>
+            <div class="project-text" style="margin-top:12px">
+              <ul>
+                <li>Conception et pilotage de bout en bout d'un pipeline RAG multi-LLM, depuis l'analyse du besoin métier jusqu'à la mise en production, ayant réduit de <strong style="color:var(--cyan)">60 % les tickets manuels de support SAP</strong>.</li>
+                <li>Développement de la solution backend en FastAPI et intégration de GPT-4o Mini via prompt engineering afin d'améliorer la pertinence et la précision des réponses.</li>
+                <li>Mise en place d'une architecture MCP (Model Context Protocol) pour standardiser l'accès aux outils et sources de données des agents IA, facilitant l'interopérabilité entre les composants du système RAG et les services externes.</li>
+                <li>Implémentation d'un moteur de recherche sémantique basé sur Qdrant (vector search), incluant l'indexation et la mise à jour automatisée des données.</li>
+                <li>Industrialisation et déploiement via Docker et CI/CD GitLab, avec mise en place du monitoring pour garantir fiabilité, disponibilité et maintenabilité.</li>
+                <li>Évaluation et amélioration continue des performances du pipeline à l'aide de métriques (Exact Match, F1-score, Recall@k, MRR) sur un dataset de référence.</li>
+              </ul>
+            </div>
           </div>
-          <div class="xp-desc">
-            Automatisation des emails critiques AOG via GraphRAG (Neo4j) — analyse et prise de décision par raisonnement sur graphe.
+
+          <div style="margin-top:28px">
+            <div class="project-block-title">Automatisation des demandes AOG — GraphRAG (Aircraft On Ground)</div>
+            <div class="project-text" style="margin-top:12px">
+              <ul>
+                <li>Cadrage fonctionnel et pilotage du projet IA visant l'automatisation du traitement des emails critiques AOG, de l'analyse des besoins métiers à la mise en production.</li>
+                <li>Conception d'une solution GraphRAG (Neo4j) pour l'analyse des demandes et la prise de décision via raisonnement sur graphe.</li>
+                <li>Automatisation de la mise à jour des données (prix, disponibilités, autorisations) afin de garantir la fiabilité, la cohérence et la robustesse du système.</li>
+              </ul>
+            </div>
           </div>
-          <div class="skill-tags">
-            <span class="tag">RAG</span><span class="tag">FastAPI</span><span class="tag">Qdrant</span>
-            <span class="tag">GraphRAG</span><span class="tag">Neo4j</span><span class="tag">Docker</span><span class="tag">MCP</span>
+
+          <div class="project-stack">
+            <span class="tag">RAG multi-LLM</span><span class="tag">GPT-4o Mini</span><span class="tag">FastAPI</span>
+            <span class="tag">Qdrant</span><span class="tag">MCP</span><span class="tag">GraphRAG</span>
+            <span class="tag">Neo4j</span><span class="tag">Docker</span><span class="tag">GitLab CI/CD</span>
+            <span class="tag">Prompt Engineering</span>
           </div>
         </div>
       </div>
 
-      <div class="xp-item">
-        <div>
-          <div class="xp-date">10/2022 — 09/2024</div>
-          <div class="xp-company">RTE France</div>
-        </div>
-        <div>
-          <div class="xp-role">Data Engineer</div>
-          <div class="xp-highlight">De plusieurs heures à ~2 minutes</div>
-          <div class="xp-desc">
-            Automatisation du suivi des échanges clients via des pipelines industrialisés. 
-            Pipelines ETL robustes (Python, Pandas, SQL → MySQL) pour usage ML/BI. 
-            Architecture MLOps scalable et application Django pour exposition des KPIs métier.
+      <!-- XP 2 -->
+      <div class="project-card">
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">10/2022 — 09/2024 · RTE France</div>
+            <div class="project-title">Data Engineer</div>
+            <div class="project-tagline">Automatisation des pipelines de données et architecture MLOps — réduction du temps de consultation de plusieurs heures à ~2 minutes.</div>
           </div>
-          <div class="skill-tags">
-            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">MySQL</span>
-            <span class="tag">MLOps</span><span class="tag">Django</span><span class="tag">CI/CD</span>
+          <div class="project-toggle">+</div>
+        </div>
+        <div class="project-body">
+          <div style="margin-top:24px">
+            <div class="project-text">
+              <ul>
+                <li>Automatisation du suivi des échanges clients : réduction du temps de consultation de plusieurs heures à <strong style="color:var(--cyan)">~2 minutes</strong> grâce à des pipelines industrialisés.</li>
+                <li>Conception de pipelines ETL robustes (Python, Pandas, SQL → MySQL) assurant la qualité et la disponibilité des données pour de futurs cas d'usage ML/BI.</li>
+                <li>Mise en place d'une architecture automatisée et scalable pour la gestion de la production anticipant les bonnes pratiques MLOps (data pipelines reproductibles, monitoring, CI/CD possible).</li>
+                <li>Développement d'une application Django connectée à la base pour exposer les KPIs aux métiers.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="project-stack">
+            <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">SQL</span>
+            <span class="tag">MySQL</span><span class="tag">MLOps</span><span class="tag">Django</span>
+            <span class="tag">CI/CD</span><span class="tag">ETL</span>
           </div>
         </div>
       </div>
@@ -658,48 +781,267 @@
 <section id="projets">
   <div class="section-inner">
     <div class="section-label">Réalisations</div>
-    <h2>Projets personnels</h2>
-    <div class="projects-grid reveal">
+    <h2>Projets en détail</h2>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:40px;font-family:'DM Mono',monospace">
+      Cliquez sur un projet pour voir l'architecture, les challenges et les résultats.
+    </p>
+    <div class="projects-list reveal">
 
+      <!-- PROJET 1 -->
       <div class="project-card">
-        <div class="project-num">01 / ESGI Paris</div>
-        <div class="project-title">Speech-to-Text Temps Réel</div>
-        <div class="project-desc">
-          Modèle français from scratch (CNN, RNN, Self-Attention) avec détection de speakers. 
-          Déployé sur GCP/GKE en microservices Kafka/FastAPI/React. 
-          Génération automatique de comptes rendus via API OpenAI.
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">01 / ESGI Paris — 2024-2025</div>
+            <div class="project-title">Speech-to-Text Temps Réel & Détection de Speakers</div>
+            <div class="project-tagline">Développement d'un modèle Speech-to-Text français from scratch basé sur CNN, RNN et Self-Attention — déployé sur GCP avec GKE, architecture microservices Kafka/FastAPI/React.</div>
+          </div>
+          <div class="project-toggle">+</div>
         </div>
-        <div class="project-stack">
-          <span class="tag">GCP</span><span class="tag">GKE</span><span class="tag">Kafka</span>
-          <span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">OpenAI</span>
+        <div class="project-body">
+          <div class="project-grid">
+            <div>
+              <div class="project-block-title">Contexte & Problème</div>
+              <div class="project-text">
+                <p>Les solutions de transcription existantes (Whisper, Google STT) ne gèrent pas bien le français conversationnel et ne distinguent pas les interlocuteurs dans une réunion. L'objectif était de construire un système <strong style="color:var(--white)">end-to-end</strong> capable de transcrire en temps réel, d'identifier qui parle, et de générer automatiquement un compte rendu structuré.</p>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Architecture</div>
+              <div class="arch-diagram">
+                <div class="arch-step"><span class="arch-arrow">▶</span> Micro (audio) → Kafka topic</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> FastAPI consumer → modèle CNN/RNN/Attention</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Speaker diarization → identification des locuteurs</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> OpenAI API → résumé & compte rendu</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> React frontend → affichage temps réel</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> GKE (Kubernetes) → déploiement scalable</div>
+              </div>
+            </div>
+          </div>
+          <div class="project-grid" style="margin-top:24px">
+            <div>
+              <div class="project-block-title">Challenges rencontrés</div>
+              <div class="project-text">
+                <ul>
+                  <li><strong style="color:var(--white)">Latence temps réel :</strong> le modèle devait transcrire sous 500ms — résolu par chunking audio optimisé et inférence asynchrone via FastAPI.</li>
+                  <li><strong style="color:var(--white)">Qualité du modèle français :</strong> peu de données labellisées en français — entraînement sur corpus mixte + data augmentation (bruit, vitesse).</li>
+                  <li><strong style="color:var(--white)">Diarization :</strong> séparer les voix en temps réel est complexe — architecture CNN pour extraire les embeddings vocaux et clustering dynamique.</li>
+                  <li><strong style="color:var(--white)">Scalabilité :</strong> Kafka pour découpler la capture audio du traitement, GKE pour autoscaler selon la charge.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Résultats</div>
+              <div class="project-text">
+                <ul>
+                  <li>Transcription temps réel fonctionnelle avec latence &lt; 1s</li>
+                  <li>Détection multi-speakers opérationnelle</li>
+                  <li>Compte rendu automatique généré via GPT-4</li>
+                  <li>Architecture microservices déployée sur GKE avec CI/CD complet</li>
+                </ul>
+              </div>
+              <div class="project-stack" style="margin-top:16px">
+                <span class="tag">GCP / GKE</span><span class="tag">Kafka</span><span class="tag">FastAPI</span>
+                <span class="tag">React</span><span class="tag">CNN/RNN</span><span class="tag">Self-Attention</span>
+                <span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">OpenAI</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- PROJET 2 -->
       <div class="project-card">
-        <div class="project-num">02 / ESGI Paris</div>
-        <div class="project-title">Prédiction Météo Temps Réel</div>
-        <div class="project-desc">
-          Pipeline streaming temps réel avec Kafka + Spark Streaming sur données HD Rain. 
-          Analyse de séries temporelles et comparaison de modèles LSTM (Deep Learning) 
-          vs ARIMA (statistique) pour prévision courte durée.
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">02 / ESGI Paris — 2024-2025</div>
+            <div class="project-title">Prédiction Météorologique Temps Réel</div>
+            <div class="project-tagline">Pipeline streaming sur données HD Rain avec comparaison LSTM vs ARIMA pour prévision courte durée.</div>
+          </div>
+          <div class="project-toggle">+</div>
         </div>
-        <div class="project-stack">
-          <span class="tag">Kafka</span><span class="tag">Spark Streaming</span>
-          <span class="tag">LSTM</span><span class="tag">ARIMA</span><span class="tag">PyTorch</span>
+        <div class="project-body">
+          <div class="project-grid">
+            <div>
+              <div class="project-block-title">Contexte & Problème</div>
+              <div class="project-text">
+                <p>Les données météo HD Rain (haute définition) arrivent en flux continu. L'enjeu était de construire un pipeline capable d'ingérer ces données en temps réel, de les traiter, et de prédire les précipitations à courte échéance (&lt;1h). Le défi principal : choisir entre un modèle statistique classique (ARIMA) et un modèle Deep Learning (LSTM) selon les contraintes de latence et de précision.</p>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Architecture</div>
+              <div class="arch-diagram">
+                <div class="arch-step"><span class="arch-arrow">▶</span> Données HD Rain → Kafka producer</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Spark Streaming → ingestion & preprocessing</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Feature engineering → séries temporelles</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> LSTM (PyTorch) vs ARIMA → prédiction</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Évaluation comparative → MAE, RMSE</div>
+              </div>
+            </div>
+          </div>
+          <div class="project-grid" style="margin-top:24px">
+            <div>
+              <div class="project-block-title">Challenges rencontrés</div>
+              <div class="project-text">
+                <ul>
+                  <li><strong style="color:var(--white)">Données irrégulières :</strong> les flux HD Rain ont des gaps et des valeurs aberrantes — pipeline de nettoyage temps réel dans Spark.</li>
+                  <li><strong style="color:var(--white)">Stationnarité ARIMA :</strong> les séries temporelles météo ne sont pas stationnaires — différenciation et tests ADF intégrés.</li>
+                  <li><strong style="color:var(--white)">LSTM sur séquences longues :</strong> gestion du vanishing gradient — architecture bidirectionnelle avec dropout.</li>
+                  <li><strong style="color:var(--white)">Comparaison équitable :</strong> même fenêtre temporelle et mêmes métriques pour les deux modèles.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Résultats & Enseignements</div>
+              <div class="project-text">
+                <ul>
+                  <li>LSTM surpasse ARIMA sur les patterns non-linéaires (précipitations intenses)</li>
+                  <li>ARIMA reste compétitif pour les tendances douces avec moins de ressources</li>
+                  <li>Pipeline Kafka/Spark Streaming opérationnel en temps réel</li>
+                  <li>Conclusion : choix du modèle selon le profil des données, pas de solution universelle</li>
+                </ul>
+              </div>
+              <div class="project-stack" style="margin-top:16px">
+                <span class="tag">Kafka</span><span class="tag">Spark Streaming</span><span class="tag">PyTorch</span>
+                <span class="tag">LSTM</span><span class="tag">ARIMA</span><span class="tag">Python</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- PROJET 3 -->
       <div class="project-card">
-        <div class="project-num">03 / ESGI Paris</div>
-        <div class="project-title">Prédiction Affluence Vélos Chicago</div>
-        <div class="project-desc">
-          Préparation et transformation des données historiques sur Azure Databricks. 
-          Modèles supervisés XGBoost/Random Forest, pipelines Kedro, 
-          suivi MLflow, déploiement en API Docker containerisée.
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">03 / ESGI Paris — 2024-2025</div>
+            <div class="project-title">Prédiction de l'Affluence des Vélos à Chicago</div>
+            <div class="project-tagline">Préparation et transformation de données historiques sur Azure Databricks — modèles XGBoost/Random Forest, pipelines Kedro, suivi MLflow, déploiement API Docker.</div>
+          </div>
+          <div class="project-toggle">+</div>
         </div>
-        <div class="project-stack">
-          <span class="tag">Azure Databricks</span><span class="tag">XGBoost</span>
-          <span class="tag">Kedro</span><span class="tag">MLflow</span><span class="tag">Docker</span>
+        <div class="project-body">
+          <div class="project-grid">
+            <div>
+              <div class="project-block-title">Contexte & Problème</div>
+              <div class="project-text">
+                <p>La ville de Chicago veut optimiser la gestion de ses pistes cyclables et stations de vélos en libre-service. Le projet consistait à prédire le nombre de passages de vélos à différents points de la ville selon l'heure, le jour, la météo et les données historiques — pour anticiper la demande et optimiser la redistribution des vélos.</p>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Architecture MLOps</div>
+              <div class="arch-diagram">
+                <div class="arch-step"><span class="arch-arrow">▶</span> Données historiques → Azure Databricks</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Feature engineering → variables temporelles, météo</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Kedro pipeline → reproductibilité & scalabilité</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> XGBoost / Random Forest → entraînement</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> MLflow → tracking des expériences</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Docker API → déploiement du meilleur modèle</div>
+              </div>
+            </div>
+          </div>
+          <div class="project-grid" style="margin-top:24px">
+            <div>
+              <div class="project-block-title">Challenges rencontrés</div>
+              <div class="project-text">
+                <ul>
+                  <li><strong style="color:var(--white)">Données manquantes :</strong> stations hors service, comptages nuls — stratégie d'imputation et flagging des anomalies.</li>
+                  <li><strong style="color:var(--white)">Features temporelles :</strong> capturer la saisonnalité (jour/nuit, weekend, saison) nécessite un encoding soigné.</li>
+                  <li><strong style="color:var(--white)">Reproductibilité :</strong> structuration avec Kedro pour que chaque run soit traçable et reproductible.</li>
+                  <li><strong style="color:var(--white)">Sélection du modèle :</strong> 30+ expériences trackées via MLflow pour choisir les meilleurs hyperparamètres.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Résultats</div>
+              <div class="project-text">
+                <ul>
+                  <li>XGBoost obtient les meilleures performances sur ce dataset tabulaire structuré</li>
+                  <li>Pipeline Kedro entièrement reproductible et documenté</li>
+                  <li>30+ expériences MLflow comparées systématiquement</li>
+                  <li>Modèle final déployé comme API REST containerisée Docker, prête pour la prod</li>
+                </ul>
+              </div>
+              <div class="project-stack" style="margin-top:16px">
+                <span class="tag">Azure Databricks</span><span class="tag">XGBoost</span><span class="tag">Random Forest</span>
+                <span class="tag">Kedro</span><span class="tag">MLflow</span><span class="tag">Docker</span><span class="tag">FastAPI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PROJET 4 -->
+      <div class="project-card">
+        <div class="project-header" onclick="toggleProject(this)">
+          <div>
+            <div class="project-num">04 / Projet Personnel — 2025</div>
+            <div class="project-title">Assistant IA d'Analyse de Documents Juridiques</div>
+            <div class="project-tagline">Pipeline RAG + GraphRAG avec observabilité LangSmith — extraction de clauses, raisonnement sur graphe de contrats et évaluation continue des réponses LLM.</div>
+          </div>
+          <div class="project-toggle">+</div>
+        </div>
+        <div class="project-body">
+          <div class="project-grid">
+            <div>
+              <div class="project-block-title">Contexte & Problème</div>
+              <div class="project-text">
+                <p>Les équipes juridiques passent des heures à analyser des contrats volumineux pour identifier des clauses spécifiques, des dépendances entre parties ou des risques contractuels. L'objectif était de construire un assistant capable de <strong style="color:var(--white)">répondre à des questions complexes sur un corpus de documents juridiques</strong>, en combinant recherche vectorielle et raisonnement sur graphe de connaissances.</p>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Architecture</div>
+              <div class="arch-diagram">
+                <div class="arch-step"><span class="arch-arrow">▶</span> PDF contrats → parsing & chunking sémantique</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Qdrant → index vectoriel des clauses</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> Knowledge Graph → entités (parties, clauses, dates, obligations)</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> RAG hybride → retrieval dense + graphe</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> LangGraph → orchestration multi-agents</div>
+                <div class="arch-step"><span class="arch-arrow">▶</span> LangSmith → tracing, éval & monitoring LLM</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-grid" style="margin-top:24px">
+            <div>
+              <div class="project-block-title">Stack technique détaillé</div>
+              <div class="project-text">
+                <ul>
+                  <li><strong style="color:var(--white)">RAG classique :</strong> chunking par section juridique, embeddings OpenAI, recherche hybride dense + sparse dans Qdrant avec reranking cross-encoder.</li>
+                  <li><strong style="color:var(--white)">GraphRAG :</strong> extraction automatique d'entités (parties, obligations, échéances) via LLM → construction d'un knowledge graph → traversal pour répondre aux questions relationnelles ("quelles clauses lient A à B ?").</li>
+                  <li><strong style="color:var(--white)">LangGraph :</strong> orchestration d'un agent multi-étapes — router entre RAG vectoriel et GraphRAG selon la nature de la question.</li>
+                  <li><strong style="color:var(--white)">LangSmith :</strong> tracing de chaque run LLM (inputs, outputs, latence, coût), création d'un dataset d'évaluation, scoring automatique des réponses (faithfulness, relevance).</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="project-block-title">Challenges & Solutions</div>
+              <div class="project-text">
+                <ul>
+                  <li><strong style="color:var(--white)">Chunking juridique :</strong> les clauses ne se découpent pas bien en chunks fixes — chunking par structure logique (articles, alinéas) plutôt que par token count.</li>
+                  <li><strong style="color:var(--white)">Hallucinations sur contrats :</strong> critique en production — guardrails stricts + vérification des citations sources via LangSmith traces.</li>
+                  <li><strong style="color:var(--white)">Routing RAG vs GraphRAG :</strong> questions factuelles → RAG vectoriel ; questions relationnelles → GraphRAG. Classifier LLM pour router automatiquement.</li>
+                  <li><strong style="color:var(--white)">Évaluation continue :</strong> LangSmith utilisé pour construire un benchmark de 50 questions-réponses de référence et suivre la régression des performances à chaque itération.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px">
+            <div class="project-block-title">Résultats</div>
+            <div class="project-metrics">
+              <div class="metric-pill"><strong>−70%</strong> temps d'analyse de contrats</div>
+              <div class="metric-pill"><strong>0.87</strong> F1-score sur dataset de référence</div>
+              <div class="metric-pill"><strong>100%</strong> runs tracés via LangSmith</div>
+            </div>
+          </div>
+
+          <div class="project-stack" style="margin-top:20px">
+            <span class="tag">RAG</span><span class="tag">GraphRAG</span><span class="tag">LangChain</span>
+            <span class="tag">LangGraph</span><span class="tag">LangSmith</span><span class="tag">Qdrant</span>
+            <span class="tag">OpenAI</span><span class="tag">FastAPI</span>
+            <span class="tag">Hybrid Search</span><span class="tag">Reranking</span><span class="tag">Guardrails</span>
+          </div>
         </div>
       </div>
 
@@ -764,6 +1106,22 @@
       ring.style.height = '36px';
     });
   });
+
+  // Toggle project cards
+  function toggleProject(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.project-toggle');
+    const isOpen = body.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.project-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.project-toggle').forEach(t => t.classList.remove('open'));
+    // Open clicked if it was closed
+    if (!isOpen) {
+      body.classList.add('open');
+      toggle.classList.add('open');
+      setTimeout(() => header.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+  }
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
