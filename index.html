@@ -710,35 +710,82 @@
         </div>
         <div class="project-body">
 
+          <!-- SAP CHATBOT -->
           <div style="margin-top:24px">
-            <div class="project-block-title">Assistant IA RAG — Support SAP</div>
-            <div class="project-text" style="margin-top:12px">
+            <div class="project-block-title">Projet 1 — Chatbot RAG · Support SAP (Mantis)</div>
+            <div class="project-grid" style="margin-top:16px">
+              <div>
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-bottom:10px">Contexte</div>
+                <div class="project-text">
+                  <p>OEM Services utilisait <strong style="color:var(--white)">Mantis Bug Tracker</strong> pour gérer les tickets SAP internes. Le volume de tickets était élevé et il n'existait pas d'équipe dédiée à leur résolution — chaque demande mobilisait un expert SAP. L'objectif : créer un chatbot capable de répondre automatiquement aux questions SAP, connecté directement à Mantis pour lire le contexte des tickets existants et proposer des solutions sans intervention humaine.</p>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-bottom:10px">Architecture</div>
+                <div class="arch-diagram">
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Mantis API → tickets SAP historiques</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> PDF, DOCX, XLSX, PPTX → parsing & extraction</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Chunking sémantique → preprocessing multi-format</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Qdrant → indexation vectorielle unifiée</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> RAG multi-LLM → retrieval + GPT-4o Mini</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> MCP → accès standardisé aux outils & sources</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> FastAPI → backend chatbot</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Docker + GitLab CI/CD → déploiement & monitoring</div>
+                </div>
+              </div>
+            </div>
+            <div class="project-text" style="margin-top:16px">
               <ul>
-                <li>Conception et pilotage de bout en bout d'un pipeline RAG multi-LLM, depuis l'analyse du besoin métier jusqu'à la mise en production, ayant réduit de <strong style="color:var(--cyan)">60 % les tickets manuels de support SAP</strong>.</li>
-                <li>Développement de la solution backend en FastAPI et intégration de GPT-4o Mini via prompt engineering afin d'améliorer la pertinence et la précision des réponses.</li>
-                <li>Mise en place d'une architecture MCP (Model Context Protocol) pour standardiser l'accès aux outils et sources de données des agents IA, facilitant l'interopérabilité entre les composants du système RAG et les services externes.</li>
-                <li>Implémentation d'un moteur de recherche sémantique basé sur Qdrant (vector search), incluant l'indexation et la mise à jour automatisée des données.</li>
-                <li>Industrialisation et déploiement via Docker et CI/CD GitLab, avec mise en place du monitoring pour garantir fiabilité, disponibilité et maintenabilité.</li>
-                <li>Évaluation et amélioration continue des performances du pipeline à l'aide de métriques (Exact Match, F1-score, Recall@k, MRR) sur un dataset de référence.</li>
+                <li>Ingestion multi-sources : <strong style="color:var(--white)">tickets Mantis, PDF, DOCX, XLSX, PPTX</strong> — documentation SAP interne, procédures, manuels techniques, présentations. Chaque format parsé et normalisé avant indexation.</li>
+                <li>Chunking sémantique adapté à chaque type de document (structure tableau pour Excel, slides pour PPTX, sections pour PDF/DOCX) avant indexation dans Qdrant.</li>
+                <li>Connexion directe au système Mantis via MCP pour lire les tickets en temps réel — les utilisateurs pouvaient aussi bien passer par le chatbot que continuer à créer des tickets directement.</li>
+                <li>Mise à jour automatisée de l'index Qdrant à chaque nouveau document ou ticket résolu — tout changement dans la base documentaire (nouveau PDF, procédure mise à jour) est automatiquement repris sans intervention manuelle.</li>
+                <li><strong style="color:var(--white)">Interface admin intégrée :</strong> les administrateurs peuvent ajouter, modifier ou supprimer des documents directement via l'interface — le système re-indexe automatiquement dans Qdrant sans redéploiement.</li>
+                <li>Évaluation continue des performances : Exact Match, F1-score, Recall@k, MRR sur un dataset de référence.</li>
+                <li>Résultat : <strong style="color:var(--cyan)">−60 % de tickets manuels</strong> grâce à la résolution automatique des cas récurrents.</li>
               </ul>
             </div>
           </div>
 
-          <div style="margin-top:28px">
-            <div class="project-block-title">Automatisation des demandes AOG — GraphRAG (Aircraft On Ground)</div>
-            <div class="project-text" style="margin-top:12px">
+          <!-- AOG -->
+          <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border)">
+            <div class="project-block-title">Projet 2 — Automatisation AOG · Aircraft On Ground</div>
+            <div class="project-grid" style="margin-top:16px">
+              <div>
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-bottom:10px">Contexte</div>
+                <div class="project-text">
+                  <p>Quand un avion est cloué au sol (<strong style="color:var(--white)">AOG — Aircraft On Ground</strong>), la compagnie aérienne envoie en urgence un email à OEM Services pour obtenir une pièce le plus vite possible. Chaque minute compte. Le processus manuel était long : lire l'email, identifier la pièce, vérifier le prix, la disponibilité et les autorisations, puis envoyer une demande à l'entrepôt avec une facture. L'objectif était d'<strong style="color:var(--white)">automatiser entièrement ce flux de bout en bout</strong>.</p>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--gray);text-transform:uppercase;margin-bottom:10px">Flux automatisé</div>
+                <div class="arch-diagram">
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Interface admin → compagnies, prix, pièces, autorisations</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> BDD mise à jour temps réel → sync automatique système</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Email AOG reçu → parsing & extraction LLM</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> GraphRAG → identification pièce + règles métier</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Vérification prix, dispo, autorisations (temps réel)</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Validation automatique des conditions</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Envoi demande entrepôt + génération facture</div>
+                  <div class="arch-step"><span class="arch-arrow">▶</span> Réponse automatique à la compagnie aérienne</div>
+                </div>
+              </div>
+            </div>
+            <div class="project-text" style="margin-top:16px">
               <ul>
-                <li>Cadrage fonctionnel et pilotage du projet IA visant l'automatisation du traitement des emails critiques AOG, de l'analyse des besoins métiers à la mise en production.</li>
-                <li>Conception d'une solution GraphRAG (Neo4j) pour l'analyse des demandes et la prise de décision via raisonnement sur graphe.</li>
-                <li>Automatisation de la mise à jour des données (prix, disponibilités, autorisations) afin de garantir la fiabilité, la cohérence et la robustesse du système.</li>
+                <li>Lecture et compréhension des emails AOG via LLM — extraction des informations clés (référence pièce, urgence, compagnie aérienne).</li>
+                <li>GraphRAG pour raisonner sur les relations entre pièces, fournisseurs, prix et règles d'autorisation — chaque décision est traçable.</li>
+                <li><strong style="color:var(--white)">Interface admin dédiée :</strong> les administrateurs se connectent directement pour gérer en temps réel les compagnies aériennes autorisées, leurs prix négociés, les pièces disponibles et les autorisations — toute modification est immédiatement prise en compte par le système sans redéploiement.</li>
+                <li>Mise à jour automatique des données en cas de changement : nouveau tarif, pièce indisponible, nouvelle compagnie ajoutée — le système reste toujours synchronisé.</li>
+                <li>Génération automatique de la demande entrepôt et de la facture associée — zéro intervention humaine sur les cas standards.</li>
               </ul>
             </div>
           </div>
 
-          <div class="project-stack">
-            <span class="tag">RAG multi-LLM</span><span class="tag">GPT-4o Mini</span><span class="tag">FastAPI</span>
-            <span class="tag">Qdrant</span><span class="tag">MCP</span><span class="tag">GraphRAG</span>
-            <span class="tag">Neo4j</span><span class="tag">Docker</span><span class="tag">GitLab CI/CD</span>
+          <div class="project-stack" style="margin-top:24px">
+            <span class="tag">RAG multi-LLM</span><span class="tag">GraphRAG</span><span class="tag">GPT-4o Mini</span>
+            <span class="tag">FastAPI</span><span class="tag">Qdrant</span><span class="tag">MCP</span>
+            <span class="tag">Mantis API</span><span class="tag">PDF/DOCX/XLSX/PPTX</span><span class="tag">Docker</span><span class="tag">GitLab CI/CD</span>
             <span class="tag">Prompt Engineering</span>
           </div>
         </div>
